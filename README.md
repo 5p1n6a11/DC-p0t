@@ -1,5 +1,7 @@
 # DC-p0t
 
+Vulnerability verification
+
 ## env
 
 Ubuntu 20.10 (Linux 5.8.0-33-generic)
