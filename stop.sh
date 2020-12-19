@@ -1,4 +1,4 @@
 #!/usr/bin/bash -eu
 
-docker stop victim
-docker rm victim
+sudo docker stop victim
+sudo docker rm victim
