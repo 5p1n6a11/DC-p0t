@@ -19,3 +19,9 @@ sudo apt update
 sudo apt install -y git bpfcc-tools
 sudo apt install -y docker.io
 ```
+
+## Related Works
+
+honeytrap
+
+https://github.com/honeytrap/honeytrap
