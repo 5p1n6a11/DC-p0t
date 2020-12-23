@@ -1,2 +1,6 @@
 __pycache__/
 Dockerfile
+docker_diff_result.txt
+docker_logs_result.txt
+log/docker_log/
+log/packet/
