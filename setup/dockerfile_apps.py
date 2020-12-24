@@ -7,7 +7,7 @@ def write_dockerfile(app, version):
         return 1
 
 def write_apache_dockerfile(version):
-    with open('Dockerfile', mode='w') as f:
+    with open('var/Dockerfile', mode='w') as f:
         f.write('FROM ubuntu\n')
         f.write('LABEL maintainer="dc-p0tter"\n')
         f.write('RUN apt-get update && apt-get install -y tzdata\n')
