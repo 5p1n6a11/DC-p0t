@@ -1,5 +1,5 @@
 __pycache__/
-var/Dockerfile
+Dockerfile
 var/log/docker_diff_result.txt
 var/log/docker_logs_result.txt
 var/log/docker_log/
