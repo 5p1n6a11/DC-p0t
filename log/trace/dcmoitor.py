@@ -22,7 +22,7 @@ b.attach_kprobe(event=execve_fnname, fn_name="do_trace_execve")
 
 while 1:
     try:
-        pass
+        b.trace_print()
     except KeyboardInterrupt:
         exit()
 
