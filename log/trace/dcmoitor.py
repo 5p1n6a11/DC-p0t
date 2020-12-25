@@ -1,21 +1,16 @@
-from __future__ import print_function
 from bcc import BPF
 
-bpf_text = """
+bpf_source = """
 #include <uapi/linux/ptrace.h>
 
-struct sys_enter_execve_arg {
-    u64 __unused__;
-    const char * filename;
-    const char * argv;
-    const char * envp;
-};
-
-int do_trace(struct sys_enter_execve_arg *args) {
+int trace_go_test(struct pt_regs *ctx) 
+{
+    u64 pid = bpf_get_current_pid_tgid();
+    bpf_trace_printk("New test process running with PID: %d\\n", pid);
     return 0;
-};
+}
 """
 
-b = BPF(text=bpf_text)
-b.attach_tracepoint("syscalls:sys_enter_execve", "do_trace")
-b.trace_print()
+bpf = BPF(text=bpf_source)
+bpf.attach_uprobe(name="./test", sym="runtime.usleep", fn_name="trace_go_test")
+bpf.trace_print()
