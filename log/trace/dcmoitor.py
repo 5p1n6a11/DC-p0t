@@ -1,46 +1,41 @@
-from bcc import BPF
+from bcc import BPF, libbcc
+import ctypes
 
 bpf_text = """
 #include <uapi/linux/ptrace.h>
 #include <linux/sched.h>
 #include <linux/fs.h>
 
-BPF_HASH(hash);
+BPF_HASH(counts);
 
 int do_trace_execve(struct pt_regs *ctx,
     const char __user *filename,
     const char __user *const __user *__argv,
     const char __user *const __user *__envp)
 {
-    u64 key, value;
-    key = 1, value = 1234;
-
-    hash.update(&key, &value);
-
-    return 0;
-}
-
-int do_trace_ret_execve(struct pt_regs *ctx)
-{
-    u64 *p;
     u64 key = 1;
+    u64 zero = 0;
+    u64 *val;
 
-    p = hash.lookup(&key);
-    if (p == NULL) {
-        bpf_trace_printk("Not found\\n");
-        return 0;
+    val = counts.lookup_or_try_init(&key, &zero);
+    if (val) {
+        bpf_trace_printk("%d\\n", *val);
     }
+    counts.increment(key);
 
-    bpf_trace_printk("%d\\n", *p);
     return 0;
 }
 """
 
 b = BPF(text=bpf_text)
-
+pin_path = "/sys/fs/bpf/counter"
 execve_fnname = b.get_syscall_fnname("execve")
 b.attach_kprobe(event=execve_fnname, fn_name="do_trace_execve")
-b.attach_kretprobe(event=execve_fnname, fn_name="do_trace_ret_execve")
+
+h = b.get_table("counts")
+ret = libbcc.lib.bpf_obj_pin(h.map_fd, ctypes.c_char_p(pin_path.encode('utf-8')))
+if ret != 0:
+    raise Exception("Failed to pin map")
 
 while 1:
     try:
