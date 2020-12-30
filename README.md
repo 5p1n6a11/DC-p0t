@@ -2,7 +2,7 @@
 
 Vulnerability verification
 
-honey pot on Docker container
+Honeypot on Docker container
 
 ## env
 
