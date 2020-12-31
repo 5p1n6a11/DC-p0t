@@ -26,6 +26,10 @@ $ sudo apt install -y docker.io
 $ ./start.sh
 ```
 
+1. write Dockerfile
+2. create Docker container
+3. run tcpdump
+
 ### stop
 
 ```
