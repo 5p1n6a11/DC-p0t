@@ -10,7 +10,7 @@ Ubuntu 20.10 (Linux 5.8.0-33-generic)
 
 VirtualBox 6.1.16
 
-## How to use
+## Usage
 
 ### packages
 
