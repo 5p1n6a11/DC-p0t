@@ -4,6 +4,7 @@ from bcc import BPF
 from bcc.utils import printb
 import time
 from collections import defaultdict
+from time import strftime
 
 BPF_PROGRAM = "event_monitor_ebpf.c"
 
@@ -20,6 +21,10 @@ execve_fnname = b.get_syscall_fnname("execve")
 b.attach_kprobe(event=execve_fnname, fn_name="syscall__execve")
 b.attach_kretprobe(event=execve_fnname, fn_name="do_ret_sys_execve")
 
+# header
+print("%-9s" % ("TIME"), end="")
+print("%-8s" % ("TIME(s)"), end="")
+print("%-6s" % ("UID"), end="")
 print("%-16s %-6s %-6s %3s" % ("PCOMM", "PID", "PPID", "RET"))
 
 class EventType(object):
@@ -41,6 +46,9 @@ def print_event(cpu, data, size):
             skip = True
 
         if not skip:
+            printb(b"%-9s" % strftime("%H:%M:%S").encode('ascii'), nl="")
+            printb(b"%-8.3f" % (time.time() - start_ts), nl="")
+            printb(b"%-6d" % event.uid, nl="")
             ppid = event.ppid if event.ppid > 0 else get_ppid(event.pid)
             ppid = b"%d" % ppid if ppid > 0 else b"?"
             printb(b"%-16s %-6d %-6s %3d" % (event.comm, event.pid,
