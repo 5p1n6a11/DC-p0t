@@ -1,6 +1,9 @@
 #include <uapi/linux/ptrace.h>
 #include <linux/sched.h>
 #include <linux/fs.h>
+#include <linux/nsproxy.h>
+#include <linux/pid_namespace.h>
+#include <linux/proc_ns.h>
 
 enum event_type {
     EVENT_ARG,
@@ -34,10 +37,12 @@ int syscall__execve(struct pt_regs *ctx,
     // create data here and pass to submit_arg to save stack space (#555)
     struct data_t data = {};
     struct task_struct *task;
+    struct pid_namespace *pns;
 
     data.pid = bpf_get_current_pid_tgid() >> 32;
 
     task = (struct task_struct *)bpf_get_current_task();
+    pns = (struct pid_namespace *) task->nsproxy->pid_ns_for_children;
     // Some kernels, like Ubuntu 4.13.0-generic, return 0
     // as the real_parent->tgid.
     // We use the get_ppid function as a fallback in those cases. (#1883)
@@ -55,6 +60,7 @@ int do_ret_sys_execve(struct pt_regs *ctx)
 {
     struct data_t data = {};
     struct task_struct *task;
+    struct pid_namespace *pns;
 
     u32 uid = bpf_get_current_uid_gid() & 0xffffffff;
 
