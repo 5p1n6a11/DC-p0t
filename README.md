@@ -9,7 +9,7 @@ Docker上にWebサーバまたはDNSサーバを立ち上げ，tcpdumpを用い�
 -->
 ## 利用例
 Docker上でbind9を立ち上げた状態で，google.comのDNSを問い合わせた際の端末およびWiresharkの画面を示す．
-![端末](../image/term1.png)
+![端末](../img/term1.png)
 
 Wiresharkでtcpdump.pcapを開いた画面
 ![Wireshark](../image/wire1.png)
