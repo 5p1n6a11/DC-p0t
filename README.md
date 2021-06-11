@@ -39,7 +39,7 @@ VirtualBox上に[Ubuntu](https://jp.ubuntu.com/download)をインストールし
 
 
 ## 使い方
-1. [インストール方法](https://gitlab.com/security_anthem_2020/dc-p0t#%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB%E6%96%B9%E6%B3%95)を参考に，環境構築を行う．
+1. インストール方法を参考に，環境構築を行う．
 
 2. 設定ファイルの修正
 
