@@ -12,10 +12,10 @@ Docker上でbind9を立ち上げた状態で，google.comのDNSを問い合わ�
 ![端末](img/term1.png)
 
 Wiresharkでtcpdump.pcapを開いた画面
-![Wireshark](../image/wire1.png)
+![Wireshark](img/wire1.png)
 
 [CVE-2011-3192を利用したexploit code](https://gist.github.com/dcarley/1170447)を用いたDoS攻撃の結果
-![cve-2011-3192](../image/cve-2011-3192.png)
+![cve-2011-3192](img/cve-2011-3192.png)
 
 ## VS.
  　既存のハニーポットとして，T-pot，Linuxコンテナ技術を利用したSHHハニーポット，BW-Potが挙げられる．
