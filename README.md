@@ -34,7 +34,7 @@ BW-Potは，HTTPまたはHTTPSを対象とした高対話型ハニーポット�
 |VMM           | Oracle VM VirtualBox|
 |ゲストOS      |Ubuntu 20.04.1       |
 
-Windows 10 で，![Oracle VM VirtualBox](https://www.virtualbox.org/)をインストールし，
+Windows 10 で，[Oracle VM VirtualBox](https://www.virtualbox.org/)をインストールし，
 VirtualBox上に![Ubuntu](https://jp.ubuntu.com/download)をインストールした環境を用意する．
 
 
