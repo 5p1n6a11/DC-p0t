@@ -70,7 +70,7 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io
 
 2. 設定ファイルの修正
 
-    init.jsonを以下のように修正する．
+    setup/init.jsonを以下のように修正する．
 ~~~json
 {
     "app":"apache", 
