@@ -7,5 +7,5 @@ sudo docker run -it -d -p 8080:80 --name victim dc-p0t/victim_con:1
 sudo docker exec victim hostname -i
 rm -f log/packet/tcpdump.pcap
 mkdir -p log/packet
-sudo tcpdump -i docker0 -s 0 -w var/log/packet/tcpdump.pcap &
+sudo tcpdump -i docker0 -s 0 -w log/packet/tcpdump.pcap &
 echo -e "\n\n*** DC-p0t start !! ***\n"
