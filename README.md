@@ -135,8 +135,10 @@ dockerのWebサーバにhttp://localhost:8080 でアクセスできる。
 |コンテナ起動中に追加や修正されたファイル|docker_log/*|docker diffで取得したファイルをdocker cp で取得|
 |コンテナ起動中に出力された標準出力および標準エラー出力|docker_logs_result.txt|コンテナ停止直前にdocker logsで取得|
 
+<!--
 ## Contribution
 開発に関わる人は，![CONTRIBUTING.md](CONTRIBUTING.md)を見てください．
+-->
 
 ## License
 MWS Cupの規定がある場合は，MWS Cupの規定に従う．
