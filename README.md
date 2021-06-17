@@ -110,7 +110,7 @@ https://gitlab.isc.org/isc-projects/bind9
 
 3. 実行
 ```
-sudo ./run.sh
+sudo ./start.sh
 ```
 
 dockerのWebサーバにhttp://localhost:8080 でアクセスできる。
