@@ -37,6 +37,33 @@ BW-Potは，HTTPまたはHTTPSを対象とした高対話型ハニーポット�
 Windows 10 で，[Oracle VM VirtualBox](https://www.virtualbox.org/)をインストールし，
 VirtualBox上に[Ubuntu](https://jp.ubuntu.com/download)をインストールした環境を用意する．
 
+## インストール方法
+1. gitとBPF toolsのインストール
+```
+sudo apt update
+sudo apt -y install git bpfcc-tools
+```
+
+2. Dockerのインストール
+参考URL: https://docs.docker.com/engine/install/ubuntu/
+
+```
+sudo apt-get remove docker docker-engine docker.io containerd runc
+sudo apt-get install \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    gnupg-agent \
+    software-properties-common
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository \
+   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable"
+sudo apt update
+sudo apt-get install docker-ce docker-ce-cli containerd.io
+```
+ディスク容量について聞かれた場合，「Y」を入力する．
 
 ## 使い方
 1. インストール方法を参考に，環境構築を行う．
@@ -107,40 +134,6 @@ sudo ./stop.sh
 |コンテナ起動中に追加や修正されたファイルの一覧|docker_diff_result.txt|コンテナ停止直前にdocker diffで取得|
 |コンテナ起動中に追加や修正されたファイル|docker_log/*|docker diffで取得したファイルをdocker cp で取得|
 |コンテナ起動中に出力された標準出力および標準エラー出力|docker_logs_result.txt|コンテナ停止直前にdocker logsで取得|
-
-## インストール方法
-1. gitとBPF toolsのインストール
-```
-sudo apt update
-sudo apt -y install git bpfcc-tools
-```
-
-2. Dockerのインストール
-参考URL: https://docs.docker.com/engine/install/ubuntu/
-
-```
-sudo apt-get remove docker docker-engine docker.io containerd runc
-sudo apt-get install \
-    apt-transport-https \
-    ca-certificates \
-    curl \
-    gnupg-agent \
-    software-properties-common
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-sudo add-apt-repository \
-   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-   $(lsb_release -cs) \
-   stable"
-sudo apt update
-sudo apt-get install docker-ce docker-ce-cli containerd.io
-```
-ディスク容量について聞かれた場合，「Y」を入力する．
-
-3. git cloneを実行
-```
-git clone https://gitlab.com/security_anthem_2020/dc-p0t.git
-cd dc-p0t
-```
 
 ## Contribution
 開発に関わる人は，![CONTRIBUTING.md](CONTRIBUTING.md)を見てください．
