@@ -47,7 +47,7 @@ def write_bind_dockerfile(version):
         f.write(version)
         f.write('\nWORKDIR /bind9 \n')
         f.write('RUN autoreconf -fi && ./configure && make && make install\n')
-        f.write('COPY ./bind_config/* /usr/local/etc/\n')
+        f.write('COPY ./config/bind_config/* /usr/local/etc/\n')
         f.write('RUN mkdir -p /var/cache/bind\n')
         f.write('RUN mkdir -p /usr/share/dns\n')
         f.write('RUN wget ftp://rs.internic.net/domain/named.cache -P /usr/share/dns\n')
