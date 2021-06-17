@@ -38,10 +38,10 @@ Windows 10 で，[Oracle VM VirtualBox](https://www.virtualbox.org/)をインス
 VirtualBox上に[Ubuntu](https://jp.ubuntu.com/download)をインストールした環境を用意する．
 
 ## インストール方法
-1. gitとBPF toolsのインストール
+1. BPF toolsのインストール
 ```
 sudo apt update
-sudo apt -y install git bpfcc-tools
+sudo apt -y install bpfcc-tools
 ```
 
 2. Dockerのインストール
