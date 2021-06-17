@@ -78,7 +78,7 @@ def write_php_dockerfile(version):
         f.write('RUN ./configure --with-apxs2=/usr/local/apache2/bin/apxs --with-mysqli --with-pdo-mysql --enable-mbregex --enable-mbstring\n')
         f.write('RUN make && make install\n')
         f.write('COPY php.ini /usr/local/lib/\n')
-        f.write('COPY httpd.conf /usr/local/apache2/conf/\n')
+        f.write('COPY config/httpd.conf /usr/local/apache2/conf/\n')
         f.write('COPY phpi.php /usr/local/apache2/htdocs/\n')
         f.write('WORKDIR /var/www/html\n')
         f.write('EXPOSE 80\n')
