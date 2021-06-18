@@ -130,10 +130,10 @@ dockerのWebサーバにhttp://localhost:8080 でアクセスできる。
 |ログの内容|ファイル名|収集方法|
 -----------|----------|---------
 |Dockerが関わる通信トラフィックのログ|log/packet/tcpdump.pcap| tcpdumpでdocker0をキャプチャ|
-|コンテナで起動したプロセスのPIDとプロセス名|log/ps_monitor.txt|execveシステムコールをホストでフックすることでプロセスの生成を監視|
-|コンテナ起動中に追加や修正されたファイルの一覧|log/docker_diff_result.txt|コンテナ停止直前にdocker diffで取得|
+|コンテナで起動したプロセスのPIDとプロセス名|log/ps_monitor.log|execveシステムコールをホストでフックすることでプロセスの生成を監視|
+|コンテナ起動中に追加や修正されたファイルの一覧|log/docker_diff_result.log|コンテナ停止直前にdocker diffで取得|
 |コンテナ起動中に追加や修正されたファイル|log/docker_log/*|docker diffで取得したファイルをdocker cp で取得|
-|コンテナ起動中に出力された標準出力および標準エラー出力|log/docker_logs_result.txt|コンテナ停止直前にdocker logsで取得|
+|コンテナ起動中に出力された標準出力および標準エラー出力|log/docker_logs_result.log|コンテナ停止直前にdocker logsで取得|
 
 <!--
 ## Contribution
