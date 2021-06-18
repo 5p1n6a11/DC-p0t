@@ -6,7 +6,7 @@ import time
 from collections import defaultdict
 from time import strftime
 
-BPF_PROGRAM = "event_monitor_ebpf.c"
+BPF_PROGRAM = "monitor/trace/event_monitor_ebpf.c"
 
 def load_bpf_program():
     with open(BPF_PROGRAM, "r") as f:
