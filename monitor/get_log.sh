@@ -10,5 +10,5 @@ do
         sudo docker cp victim:$line log/docker_log/$line
     fi
 done
-sudo docker diff victim > log/docker_diff_result.txt
-sudo docker logs victim > log/docker_logs_result.txt
+sudo docker diff victim > log/docker_diff_result.log
+sudo docker logs victim > log/docker_logs_result.log
