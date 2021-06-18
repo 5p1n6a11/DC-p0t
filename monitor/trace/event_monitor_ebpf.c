@@ -5,6 +5,8 @@
 #include <linux/pid_namespace.h>
 #include <linux/proc_ns.h>
 
+#define ARGSIZE 128
+
 enum event_type {
     EVENT_ARG,
     EVENT_RET,
@@ -16,10 +18,27 @@ struct data_t {
     u32 uid;
     char comm[TASK_COMM_LEN];
     enum event_type type;
+    char argv[ARGSIZE];
     int retval;
 };
 
 BPF_PERF_OUTPUT(events);
+
+static int __submit_arg(struct pt_regs *ctx, void *ptr, struct data_t *data)
+{
+    bpf_probe_read_user(data->argv, sizeof(data->argv), ptr);
+    events.perf_submit(ctx, data, sizeof(struct data_t));
+    return 1;
+}
+static int submit_arg(struct pt_regs *ctx, void *ptr, struct data_t *data)
+{
+    const char *argp = NULL;
+    bpf_probe_read_user(&argp, sizeof(argp), ptr);
+    if (argp) {
+        return __submit_arg(ctx, (void *)(argp), data);
+    }
+    return 0;
+}
 
 static int submit(struct pt_regs *ctx, void *ptr, struct data_t *data)
 {
@@ -49,8 +68,19 @@ int syscall__execve(struct pt_regs *ctx,
     bpf_get_current_comm(&data.comm, sizeof(data.comm));
     data.type = EVENT_ARG;
 
-    submit(ctx, (void *)filename, &data);
+    __submit_arg(ctx, (void *)filename, &data);
 
+    // skip first arg, as we submitted filename
+    #pragma unroll
+    for (int i = 1; i < MAXARG; i++) {
+        if (submit_arg(ctx, (void *)&__argv[i], &data) == 0)
+            goto out;
+    }
+
+    // handle truncated argument list
+    char ellipsis[] = "...";
+    __submit_arg(ctx, (void *)ellipsis, &data);
+out:
     return 0;
 }
 
