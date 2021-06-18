@@ -197,7 +197,7 @@ class DCMonitor:
             return
 
         if eventname in self.events_to_trace or eventfunc in self.events_to_trace:
-            log.info("%-6d %-16s %-16s %-6d %-6d %-6d %-12d %s" % (
+            print("%-6d %-16s %-16s %-6d %-6d %-6d %-12d %s" % (
                 context.uid, eventname, comm, context.pid, context.tid, context.ppid, context.retval, " ".join(args)))
 
             data = dict()
