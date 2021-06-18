@@ -14,6 +14,7 @@ def load_bpf_program():
     return bpf
 
 bpf_text = load_bpf_program()
+bpf_text = bpf_text.replace("MAXARG", "20")
 
 # initialize BPF
 b = BPF(text=bpf_text)
@@ -25,7 +26,7 @@ b.attach_kretprobe(event=execve_fnname, fn_name="do_ret_sys_execve")
 print("%-9s" % ("TIME"), end="")
 print("%-8s" % ("TIME(s)"), end="")
 print("%-6s" % ("UID"), end="")
-print("%-16s %-6s %-6s %3s" % ("PCOMM", "PID", "PPID", "RET"))
+print("%-16s %-6s %-6s %3s %s" % ("PCOMM", "PID", "PPID", "RET", "ARGS"))
 
 class EventType(object):
     EVENT_ARG = 0
@@ -34,13 +35,23 @@ class EventType(object):
 start_ts = time.time()
 argv = defaultdict(list)
 
+def get_ppid(pid):
+    try:
+        with open("/proc/%d/status" % pid) as status:
+            for line in status:
+                if line.statuswith("PPid"):
+                    return int (line.split()[1])
+    except IOError:
+        pass
+    return 0
+
 # process event
 def print_event(cpu, data, size):
     event = b["events"].event(data)
     skip = False
 
     if event.type == EventType.EVENT_ARG:
-        pass
+        argv[event.pid].append(event.argv)
     elif event.type == EventType.EVENT_RET:
         if event.retval != 0:
             skip = True
@@ -51,8 +62,14 @@ def print_event(cpu, data, size):
             printb(b"%-6d" % event.uid, nl="")
             ppid = event.ppid if event.ppid > 0 else get_ppid(event.pid)
             ppid = b"%d" % ppid if ppid > 0 else b"?"
-            printb(b"%-16s %-6d %-6s %3d" % (event.comm, event.pid,
-                    ppid, event.retval))
+            argv_text = b' '.join(argv[event.pid]).replace(b'\n', b'\\n')
+            printb(b"%-16s %-6d %-6s %3d %s" % (event.comm, event.pid,
+                    ppid, event.retval, argv_text))
+
+        try:
+            del(argv[event.pid])
+        except Exception:
+            pass
 
 # loop with callback to print_event
 b["events"].open_perf_buffer(print_event)
