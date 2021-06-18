@@ -8,4 +8,5 @@ sudo docker exec victim hostname -i
 rm -f log/packet/tcpdump.pcap
 mkdir -p log/packet
 sudo tcpdump -i docker0 -s 0 -w log/packet/tcpdump.pcap &
+sudo ./tracer.py 
 echo -e "\n\n*** DC-p0t start !! ***\n"
