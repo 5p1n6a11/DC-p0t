@@ -119,7 +119,7 @@ class DCMonitor:
             self.bpf.attach_kprobe(event=syscall_fnname, fn_name="syscall__" + syscall)
             self.bpf.attach_kretprobe(event=syscall_fnname, fn_name="trace_ret_" + syscall)
 
-        log.info("%-6s %-16s %-16s %-6s %-6s %-6s %-12s %s" % (
+        print("%-6s %-16s %-16s %-6s %-6s %-6s %-12s %s" % (
             "UID", "EVENT", "COMM", "PID", "TID", "PPID", "RET", "ARGS"))
 
     def get_type_from_buf(self, buf):
