@@ -56,10 +56,17 @@ int syscall__execve(struct pt_regs *ctx,
     // create data here and pass to submit_arg to save stack space (#555)
     struct data_t data = {};
     struct task_struct *task;
+    
+    task = (struct task_struct *) bpf_get_current_task();
+    struct pid_namespace *pns = (struct pid_namespace *) task->nsproxy->pid_ns_for_children;
+
+    if (pns->ns.inum == PROC_PID_INIT_INO) {
+        return 0;
+    }
 
     data.pid = bpf_get_current_pid_tgid() >> 32;
 
-    task = (struct task_struct *)bpf_get_current_task();
+    // task = (struct task_struct *)bpf_get_current_task();
     // Some kernels, like Ubuntu 4.13.0-generic, return 0
     // as the real_parent->tgid.
     // We use the get_ppid function as a fallback in those cases. (#1883)
@@ -88,13 +95,20 @@ int do_ret_sys_execve(struct pt_regs *ctx)
 {
     struct data_t data = {};
     struct task_struct *task;
+    
+    task = (struct task_struct *) bpf_get_current_task();
+    struct pid_namespace *pns = (struct pid_namespace *) task->nsproxy->pid_ns_for_children;
+
+    if (pns->ns.inum == PROC_PID_INIT_INO) {
+        return 0;
+    }
 
     u32 uid = bpf_get_current_uid_gid() & 0xffffffff;
 
     data.pid = bpf_get_current_pid_tgid() >> 32;
     data.uid = uid;
 
-    task = (struct task_struct *)bpf_get_current_task();
+    // task = (struct task_struct *)bpf_get_current_task();
     // Some kernels, like Ubuntu 4.13.0-generic, return 0
     // as the real_parent->tgid.
     // We use the get_ppid function as a fallback in those cases. (#1883)
